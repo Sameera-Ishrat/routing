@@ -48,3 +48,41 @@ ul {
   margin: 0;
   padding: 0;
 }
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+.list {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.list a {
+  text-decoration: none;
+  color: lightgoldenrodyellow;
+}
+.list a:hover,
+.list a.active {
+  color: orange;
+  text-decoration: underline;
+}
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.events-list a {
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  background-color: #f6ad1b;
+  margin: 2rem;
+  color: #000;
+  
+  
+}
+
