@@ -8,7 +8,7 @@ const EventsNavigation = () => {
             <NavLink to='new-event'
             className={({isActive}) => isActive ? "active" : "undefined"}
             >New Event</NavLink>
-            <NavLink to='event'
+            <NavLink to='/events/edit'
             className={({isActive}) => isActive ? "active" : "undefined"}
             >Edit Event</NavLink>
         </ul>

@@ -8,6 +8,8 @@ const EventsPage = () => {
 const data = useLoaderData();
 const events = data.events;
 
+console.log(data,"DATA")
+console.log(events,"EVENTS");
   return (
     <>
     <EventsList events={events} />
