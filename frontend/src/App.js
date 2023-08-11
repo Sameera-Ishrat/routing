@@ -37,10 +37,10 @@ const router = createBrowserRouter([
    errorElement : <Error />,
    children : [
     {index : true , element : <Home />},
-    {path : 'events' , element : <EventsRoot />,
-    loader : eventsLoader ,
+    
+    {path : 'events' , element : <EventsRoot />,  
     children : [
-      {index:true , element : <EventsPage />},
+      {index:true , element : <EventsPage />,loader : eventsLoader ,},
       {path:':eventId' , element : <EventsDetailPage />},
       {path:'new-event' , element : <NewEventPage />},
       {path:':eventId/edit' , element : <EditEventPage />},
