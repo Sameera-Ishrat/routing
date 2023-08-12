@@ -3,8 +3,8 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home";
 import EventsPage,{loader as eventsLoader} from "./pages/EventsPage";
-import EventsDetailPage from "./pages/EventsDetailPage";
-import NewEventPage from "./pages/NewEventPage";
+import EventsDetailPage , {loader as eventsDetailsLoader} from "./pages/EventsDetailPage";
+import NewEventPage , {action as newEventAction} from "./pages/NewEventPage";
 import EditEventPage from "./pages/EditEventPage";
 import Root from "./pages/Root";
 import Error from "./pages/Error";
@@ -37,15 +37,30 @@ const router = createBrowserRouter([
    errorElement : <Error />,
    children : [
     {index : true , element : <Home />},
-    
-    {path : 'events' , element : <EventsRoot />,  
-    children : [
-      {index:true , element : <EventsPage />,loader : eventsLoader ,},
-      {path:':eventId' , element : <EventsDetailPage />},
-      {path:'new-event' , element : <NewEventPage />},
-      {path:':eventId/edit' , element : <EditEventPage />},
-    ]
-  }
+
+  //   {path : 'events' , element : <EventsRoot />,  
+  //   children : [
+  //     {index:true , element : <EventsPage />,loader : eventsLoader ,},
+  //     {path:':eventId' , element : <EventsDetailPage />,loader : eventsDetailsLoader},
+  //     {path:'new-event' , element : <NewEventPage />},
+  //     {path:':eventId/edit' , element : <EditEventPage />},
+  //   ]
+  // }
+  {path : 'events' , element : <EventsRoot />,
+  children : [
+    {index:true , element : <EventsPage />,loader : eventsLoader ,},
+{path : ':eventId',
+loader : eventsDetailsLoader,
+id:'event-details',
+children : [
+  {index:true , element : <EventsDetailPage />},
+  {path:'edit' , element : <EditEventPage />},
+  
+]
+},
+{path:'new-event' , element : <NewEventPage /> , action:newEventAction}, 
+  ]
+}
    ]
   },
  
@@ -56,3 +71,20 @@ function App() {
 }
 
 export default App;
+
+/*****
+ * Since both EventsDetailsPage and EditEventPage share same props and we 
+ * have to load similar data in both, we have to create a separate but same
+ * loader function for EditEventPage. In order to avoid that, we
+ * can create a nested layout as a
+ * loader : eventsDetailsLoader,
+ * id:'event-id',
+children : [
+  {path:':eventId' , element : <EventsDetailPage />},
+  {path:':eventId/edit' , element : <EditEventPage />},
+]
+Above the loader is shared in chidren components like EventsDetailsPage and 
+EditEventPage
+
+*** We have to use useRouteLoaderData('event-id') instead of useLoaderData
+ */
