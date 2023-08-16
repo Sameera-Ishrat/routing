@@ -8,11 +8,12 @@ function EventsList({ events }) {
         {events.map((event) => (
           <Link to ={`${event.id}`} 
           key={event.id} className={classes.item}>
-            <a href="...">
+            <a href="..." style={{textDecoration:'none'}}>
               <img src={event.image} alt={event.title} />
               <div className={classes.content}>
                 <h2>{event.title}</h2>
                 <time>{event.date}</time>
+                <p>{event.description}</p>
               </div>
             </a>
           </Link>
