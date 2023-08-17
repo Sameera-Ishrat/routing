@@ -4,12 +4,13 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home";
 import EventsPage,{loader as eventsLoader} from "./pages/EventsPage";
 import EventsDetailPage , {loader as eventsDetailsLoader} from "./pages/EventsDetailPage";
-import NewEventPage , {action as newEventAction} from "./pages/NewEventPage";
+import NewEventPage from "./pages/NewEventPage";
 import EditEventPage from "./pages/EditEventPage";
 import Root from "./pages/Root";
 import Error from "./pages/Error";
 import EventsRoot from "./pages/EventsRoot";
-
+import {action as newAndEditEventAction} from "./components/EventForm";
+import Newsletter, { action as newsletterAction } from "./pages/NewLetter";
 // 1. Add five new (dummy) page components (content can be simple <h1> elements)
 //    - HomePage
 //    - EventsPage
@@ -54,14 +55,17 @@ loader : eventsDetailsLoader,
 id:'event-details',
 children : [
   {index:true , element : <EventsDetailPage />},
-  {path:'edit' , element : <EditEventPage />},
+  {path:'edit' , element : <EditEventPage />, action:newAndEditEventAction},
   
 ]
 },
-{path:'new-event' , element : <NewEventPage /> , action:newEventAction}, 
-  ]
-}
-   ]
+// {path:'new-event' , element : <NewEventPage /> , action:newEventAction}, 
+{path:'new-event' , element : <NewEventPage /> , action:newAndEditEventAction},   
+]
+},
+ {path:'newsletter',element:<Newsletter />,action : newsletterAction}  
+
+]
   },
  
   
