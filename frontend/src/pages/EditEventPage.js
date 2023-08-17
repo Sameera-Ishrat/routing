@@ -9,7 +9,7 @@ const EditEventPage = () => {
   const data = useRouteLoaderData('event-details');
   return (
     <div>
-      <EventForm event = {data.event} />
+      <EventForm event = {data.event} method='PATCH' />
     </div>
   )
   // event is coming from the backend...
