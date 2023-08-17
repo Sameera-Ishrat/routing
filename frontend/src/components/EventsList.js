@@ -6,7 +6,10 @@ function EventsList({ events }) {
       <h1>All Events</h1>
       <ul className={classes.list}>
         {events.map((event) => (
-          <Link to ={`${event.id}`} 
+          // <Link to ={`${event.id}`} 
+          //changed the link to absolute /events/${event.id} after using the
+          // deffer functionality
+          <Link to ={`/events/${event.id}`} 
           key={event.id} className={classes.item}>
             <a href="..." style={{textDecoration:'none'}}>
               <img src={event.image} alt={event.title} />
