@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 // import { useParams } from 'react-router'
 // import { Link } from 'react-router-dom';
 
 import EventItem from "../components/EventItem";
-import { json, redirect, useLoaderData, useRouteLoaderData } from 'react-router';
+import { json, redirect, useLoaderData, useRouteLoaderData ,defer, Await} from 'react-router';
+import EventsList from '../components/EventsList';
 
 
 const EventsDetailPage = () => {
@@ -11,24 +12,75 @@ const EventsDetailPage = () => {
 //   const data = useLoaderData();
 // console.log(data.event);
 
-const data = useRouteLoaderData('event-details')
+// const data = useRouteLoaderData('event-details')
+const {event , events} = useRouteLoaderData('event-details')
   return (
-  <EventItem  event = {data.event}/>
+    <>
+    <Suspense fallback={<p style={{textAlign:"center"}}>Loading...</p>}>
+      <Await resolve={event}>
+{(loadedEvent) => <EventItem  event = {loadedEvent}/>}
+    </Await>
+    </Suspense>
+    <Suspense fallback={<p style={{textAlign:"center"}}>Loading...</p>}>
+<Await resolve={events}>
+    {(loadedEvents) => <EventsList events={loadedEvents} />}
+    </Await>
+   {/* <EventItem  event = {data.event}/>// event is coming from the backend */}  
+    </Suspense>
+    </>
+    
   )
-  // event is coming from yhr backend
+  
 }
 
 export default EventsDetailPage
 
-export const loader = async({request,params}) => {
-const id = params.eventId;
-const response = await fetch(`http://localhost:8080/events/${id}`);
-if(!response.ok) {
-  throw json({message:'Cannot load Event Details'},{status:500})
+async function loadeEvents() {
+  const response = await fetch('http://localhost:8080/events');
+
+    if(!response.ok) {
+    throw json({message:'Could not fetch events'} , {status:500})
+//throw new Response(JSON.stringify({message:'Could not fetch events'},{status: 500}))
+   
 }else {
-  return response;
+      //return response;
+      const resData = await response.json();
+      return resData.events;
+      
+    }
 }
+
+async function loadEvent(id) {
+  const response = await fetch(`http://localhost:8080/events/${id}`);
+  if(!response.ok) {
+    throw json({message:'Cannot load Event Details'},{status:500})
+  }else {
+    //return response;
+    const resData = await response.json();
+    return resData.event;
+
+  }
 }
+
+export const loader = ({request,params}) => {
+  const id = params.eventId;
+ return defer({
+  event : loadEvent(id),
+  events : loadeEvents()
+ })
+  }
+
+// export const loader = async({request,params}) => {
+// const id = params.eventId;
+// const response = await fetch(`http://localhost:8080/events/${id}`);
+// if(!response.ok) {
+//   throw json({message:'Cannot load Event Details'},{status:500})
+// }else {
+//   return response;
+// }
+// }
+
+/*************** Action method **************** */
 
 export const action = async({request,params}) => {
   const eventId = params.eventId;
